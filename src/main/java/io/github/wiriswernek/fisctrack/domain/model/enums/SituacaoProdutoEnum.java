@@ -13,9 +13,9 @@ public enum SituacaoProdutoEnum {
         this.descricao = descricao;
     }
 
-    private static SituacaoProdutoEnum parse(String descricao) {
+    public static SituacaoProdutoEnum parse(String descricao) {
         for (SituacaoProdutoEnum situacao : SituacaoProdutoEnum.values()) {
-            if (situacao.descricao.equals(descricao)) {
+            if (situacao.name().equals(descricao)) {
                 return situacao;
             }
         }

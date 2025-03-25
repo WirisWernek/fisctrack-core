@@ -23,7 +23,7 @@ public class ProdutoRepository implements PanacheRepository<Produto> {
             params.put("id", filter.getId());
         }
 
-        if (filter.getDescricao() != null) {
+        if (filter.getDescricao() != null && !filter.getDescricao().trim().isEmpty()) {
             builder.append(" AND p.descricao like ");
             builder.append("'%").append(filter.getDescricao().toUpperCase()).append("%'");
         }

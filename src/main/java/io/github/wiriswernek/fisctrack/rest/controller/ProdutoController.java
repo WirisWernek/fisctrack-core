@@ -22,9 +22,9 @@ public class ProdutoController extends BaseController {
     private ProdutoService produtoService;
 
     @GET
-    public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao, @QueryParam("situacao") SituacaoProdutoEnum situacao) {
+    public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao, @QueryParam("situacao") String situacao) {
         try {
-            var filter = new ProdutoFilter(id, descricao, situacao);
+            var filter = new ProdutoFilter(id, descricao, SituacaoProdutoEnum.parse(situacao));
             var produtos = produtoService.search(filter);
             return Response.ok(produtos).build();
         } catch (Exception e) {
