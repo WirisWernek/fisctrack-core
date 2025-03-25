@@ -22,9 +22,9 @@ public class FornecedorController extends BaseController {
     private FornecedorService fornecedorService;
 
     @GET
-    public Response getAll(@QueryParam("razaoSocial") String razaoSocial, @QueryParam("cnpj") String cnpj, @QueryParam("situacao") SituacaoFornecedorEnum situacao) {
+    public Response getAll(@QueryParam("razaoSocial") String razaoSocial, @QueryParam("cnpj") String cnpj, @QueryParam("situacao") String situacao) {
         try {
-            var filter = new FornecedorFilter(razaoSocial, cnpj, situacao);
+            var filter = new FornecedorFilter(razaoSocial, cnpj, SituacaoFornecedorEnum.parse(situacao));
             var fornecedores = fornecedorService.search(filter);
             return Response.ok(fornecedores).build();
         } catch (Exception e) {

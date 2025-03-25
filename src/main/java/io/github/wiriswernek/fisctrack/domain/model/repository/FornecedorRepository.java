@@ -20,12 +20,12 @@ public class FornecedorRepository implements PanacheRepository<Fornecedor> {
 
         builder.append("SELECT f FROM Fornecedor f WHERE 1=1 ");
 
-        if (filter.getCnpj() != null) {
+        if (filter.getCnpj() != null && !filter.getCnpj().trim().isEmpty() ) {
             builder.append(" AND f.cnpj like ");
             builder.append("'%").append(filter.getCnpj()).append("%'");
         }
 
-        if (filter.getRazaoSocial() != null) {
+        if (filter.getRazaoSocial() != null && !filter.getRazaoSocial().trim().isEmpty()) {
             builder.append(" AND f.razaoSocial like ");
             builder.append("'%").append(filter.getRazaoSocial().toUpperCase()).append("%'");
         }
