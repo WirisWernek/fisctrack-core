@@ -1,6 +1,7 @@
 package io.github.wiriswernek.fisctrack.domain.model.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,15 @@ public class NotaFiscal {
     @JoinColumn(name = "FORNECEDOR_ID")
     private Fornecedor fornecedor;
 
-    @OneToOne(cascade = CascadeType.ALL) // Define a relação um-para-um
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ENDERECO_ID")
     private Endereco endereco;
+
+    @OneToMany(mappedBy = "notaFiscal", cascade = CascadeType.REMOVE)
+    private List<ItemNotaFiscal> items;
+
+    @PrePersist()
+    public void prePersist() {
+        this.emissao = LocalDateTime.now();
+    }
 }
