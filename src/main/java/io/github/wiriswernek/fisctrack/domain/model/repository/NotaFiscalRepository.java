@@ -19,7 +19,7 @@ public class NotaFiscalRepository implements PanacheRepository<NotaFiscal> {
 
         builder.append("SELECT nf FROM NotaFiscal nf WHERE 1=1 ");
 
-        if (filter.getNumeroNota() != null) {
+        if (filter.getNumeroNota() != null && !filter.getNumeroNota().trim().isEmpty()) {
             builder.append(" AND nf.numeroNota = :numeroNota ");
             params.put("numeroNota", filter.getNumeroNota());
         }

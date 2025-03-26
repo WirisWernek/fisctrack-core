@@ -16,7 +16,7 @@ public class NotaFiscalFilter {
     public NotaFiscalFilter(String numeroNota, Long fornecedorId, String dataEmissaoInicio, String dataEmissaoFim) {
         this.numeroNota = numeroNota;
         this.fornecedorId = fornecedorId;
-        this.dataEmissaoInicio = dataEmissaoInicio != null ? LocalDate.parse(dataEmissaoInicio) : null;
-        this.dataEmissaoFim = dataEmissaoFim != null ? LocalDate.parse(dataEmissaoFim) : null;
+        this.dataEmissaoInicio = dataEmissaoInicio != null && !dataEmissaoInicio.trim().isEmpty() ? LocalDate.parse(dataEmissaoInicio) : null;
+        this.dataEmissaoFim = dataEmissaoFim != null && !dataEmissaoFim.trim().isEmpty() ? LocalDate.parse(dataEmissaoFim) : null;
     }
 }
