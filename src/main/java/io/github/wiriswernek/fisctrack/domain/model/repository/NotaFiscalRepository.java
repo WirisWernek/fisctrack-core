@@ -1,15 +1,14 @@
 package io.github.wiriswernek.fisctrack.domain.model.repository;
 
-import io.github.wiriswernek.fisctrack.domain.model.dto.filter.NotaFiscalFilter;
-import io.github.wiriswernek.fisctrack.domain.model.dto.filter.ProdutoFilter;
-import io.github.wiriswernek.fisctrack.domain.model.entity.NotaFiscal;
-import io.github.wiriswernek.fisctrack.domain.model.entity.Produto;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.hibernate.orm.panache.PanacheRepository;
-import jakarta.enterprise.context.ApplicationScoped;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import io.github.wiriswernek.fisctrack.domain.model.dto.filter.NotaFiscalFilter;
+import io.github.wiriswernek.fisctrack.domain.model.entity.NotaFiscal;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
+import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Sort;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class NotaFiscalRepository implements PanacheRepository<NotaFiscal> {
@@ -39,6 +38,6 @@ public class NotaFiscalRepository implements PanacheRepository<NotaFiscal> {
             params.put("emissaoFim", filter.getDataEmissaoFim());
         }
 
-        return this.find(builder.toString(), params);
+        return this.find(builder.toString(), Sort.by("id").ascending(), params);
     }
 }

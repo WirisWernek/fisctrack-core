@@ -7,7 +7,16 @@ import io.github.wiriswernek.fisctrack.domain.model.enums.SituacaoProdutoEnum;
 import io.github.wiriswernek.fisctrack.domain.service.ProdutoService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -18,63 +27,76 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProdutoController extends BaseController {
 
-    @Inject
-    private ProdutoService produtoService;
+	@Inject
+	private ProdutoService produtoService;
 
-    @GET
-    public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao, @QueryParam("situacao") String situacao) {
-        try {
-            var filter = new ProdutoFilter(id, descricao, SituacaoProdutoEnum.parse(situacao));
-            var produtos = produtoService.search(filter);
-            return Response.ok(produtos).build();
-        } catch (Exception e) {
-            return handleException(e);
-        }
-    }
+	@GET
+	public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao,
+			@QueryParam("situacao") String situacao) {
+		try {
+			var filter = new ProdutoFilter(id, descricao, SituacaoProdutoEnum.parse(situacao));
+			var produtos = produtoService.search(filter);
+			return Response.ok(produtos).build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 
-    @GET
-    @Path("/{id}")
-    public Response getById(@PathParam("id") Long id) {
-        try {
-            var produto = produtoService.findById(id);
-            return Response.ok(produto).build();
-        } catch (Exception e) {
-            return handleException(e);
-        }
-    }
+	@GET
+	@Path("/{id}")
+	public Response getById(@PathParam("id") Long id) {
+		try {
+			var produto = produtoService.findById(id);
+			return Response.ok(produto).build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 
-    @POST
-    @Transactional
-    public Response create(ProdutoRequest produto) {
-        try {
-            produtoService.create(produto);
-            return Response.status(Response.Status.CREATED).build();
-        } catch (Exception e) {
-            return handleException(e);
-        }
-    }
+	@POST
+	@Transactional
+	public Response create(ProdutoRequest produto) {
+		try {
+			produtoService.create(produto);
+			return Response.status(Response.Status.CREATED).build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 
-    @PUT
-    @Path("/{id}")
-    @Transactional
-    public Response update(@PathParam("id") Long id, ProdutoRequest produto) {
-        try {
-            produtoService.update(id, produto);
-            return Response.noContent().build();
-        } catch (Exception e) {
-            return handleException(e);
-        }
-    }
+	@PUT
+	@Path("/{id}")
+	@Transactional
+	public Response update(@PathParam("id") Long id, ProdutoRequest produto) {
+		try {
+			produtoService.update(id, produto);
+			return Response.noContent().build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 
-    @DELETE
-    @Path("/{id}")
-    @Transactional
-    public Response delete(@PathParam("id") Long id) {
-        try {
-            produtoService.delete(id);
-            return Response.noContent().build();
-        } catch (Exception e) {
-            return handleException(e);
-        }
-    }
+	@DELETE
+	@Path("/{id}")
+	@Transactional
+	public Response delete(@PathParam("id") Long id) {
+		try {
+			produtoService.delete(id);
+			return Response.noContent().build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
+
+	@PATCH
+	@Path("/{id}/situacao")
+	@Transactional
+	public Response updateSituacao(@PathParam("id") Long id) {
+		try {
+			produtoService.updateSituacao(id);
+			return Response.noContent().build();
+		} catch (Exception e) {
+			return handleException(e);
+		}
+	}
 }

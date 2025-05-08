@@ -7,6 +7,7 @@ import io.github.wiriswernek.fisctrack.domain.model.dto.filter.ProdutoFilter;
 import io.github.wiriswernek.fisctrack.domain.model.entity.Produto;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
+import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -33,7 +34,7 @@ public class ProdutoRepository implements PanacheRepository<Produto> {
             params.put("situacao", filter.getSituacao());
         }
 
-        return this.find(builder.toString(), params);
+        return this.find(builder.toString(), Sort.by("id").ascending(), params);
     }
 
 
