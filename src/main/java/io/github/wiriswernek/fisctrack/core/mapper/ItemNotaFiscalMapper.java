@@ -5,12 +5,21 @@ import io.github.wiriswernek.fisctrack.domain.model.dto.response.ItemNotaFiscalR
 import io.github.wiriswernek.fisctrack.domain.model.entity.ItemNotaFiscal;
 
 public class ItemNotaFiscalMapper {
-    public static ItemNotaFiscal toEntityByRequest(ItemNotaFiscalRequest requestDTO) {
-        return null;
-    }
+	public static ItemNotaFiscal toEntityByRequest(ItemNotaFiscalRequest requestDTO) {
+		return ItemNotaFiscal.builder()
+				.quantidade(requestDTO.getQuantidade())
+				.valorUnitario(requestDTO.getValorUnitario())
+				.build();
+	}
 
+	public static ItemNotaFiscalResponse toResponseByEntity(ItemNotaFiscal entity) {
+		var produto = ProdutoMapper.toResponseByEntity(entity.getProduto());
 
-    public static ItemNotaFiscalResponse toResponseByEntity(ItemNotaFiscal entity) {
-        return null;
-    }
+		return ItemNotaFiscalResponse.builder()
+				.id(entity.getId())
+				.quantidade(entity.getQuantidade())
+				.valorUnitario(entity.getValorUnitario())
+				.produto(produto)
+				.build();
+	}
 }

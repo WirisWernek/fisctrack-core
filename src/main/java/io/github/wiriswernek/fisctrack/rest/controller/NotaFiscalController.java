@@ -2,20 +2,22 @@ package io.github.wiriswernek.fisctrack.rest.controller;
 
 import io.github.wiriswernek.fisctrack.core.baseclass.BaseController;
 import io.github.wiriswernek.fisctrack.domain.model.dto.filter.NotaFiscalFilter;
-import io.github.wiriswernek.fisctrack.domain.model.dto.filter.ProdutoFilter;
 import io.github.wiriswernek.fisctrack.domain.model.dto.request.NotaFiscalRequest;
-import io.github.wiriswernek.fisctrack.domain.model.dto.request.ProdutoRequest;
-import io.github.wiriswernek.fisctrack.domain.model.enums.SituacaoProdutoEnum;
 import io.github.wiriswernek.fisctrack.domain.service.NotaFiscalService;
-import io.github.wiriswernek.fisctrack.domain.service.ProdutoService;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.*;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDate;
 
 @Path("/api/nota-fiscal")
 @Consumes(MediaType.APPLICATION_JSON)

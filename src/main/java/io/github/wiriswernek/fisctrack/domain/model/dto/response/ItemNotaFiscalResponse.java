@@ -10,5 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ItemNotaFiscalResponse {
-    private Integer quantidade;
+	private Long id;
+	private Integer quantidade;
+	private Float valorUnitario;
+	private ProdutoResponse produto;
 }

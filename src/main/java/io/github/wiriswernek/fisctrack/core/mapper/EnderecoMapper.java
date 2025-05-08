@@ -5,28 +5,29 @@ import io.github.wiriswernek.fisctrack.domain.model.dto.response.EnderecoRespons
 import io.github.wiriswernek.fisctrack.domain.model.entity.Endereco;
 
 public class EnderecoMapper {
-    public static Endereco toEntityByRequest(EnderecoRequest requestDTO) {
-        return Endereco.builder()
-                .rua(requestDTO.getRua())
-                .numero(requestDTO.getNumero())
-                .bairro(requestDTO.getBairro())
-                .cidade(requestDTO.getCidade())
-                .estado(requestDTO.getEstado())
-                .pais(requestDTO.getPais())
-                .build();
-    }
+	public static Endereco toEntityByRequest(EnderecoRequest requestDTO) {
+		return Endereco.builder()
+				.cep(requestDTO.getCep())
+				.rua(requestDTO.getRua())
+				.numero(requestDTO.getNumero())
+				.bairro(requestDTO.getBairro())
+				.cidade(requestDTO.getCidade())
+				.estado(requestDTO.getEstado())
+				.pais(requestDTO.getPais())
+				.build();
+	}
 
-    public static EnderecoResponse toResponseByEntity(Endereco entity) {
-        return EnderecoResponse.builder()
-                .id(entity.getId())
-                .rua(entity.getRua())
-                .numero(entity.getNumero())
-                .bairro(entity.getBairro())
-                .cidade(entity.getCidade())
-                .estado(entity.getEstado())
-                .pais(entity.getPais())
-                .build();
-
-    }
+	public static EnderecoResponse toResponseByEntity(Endereco entity) {
+		return EnderecoResponse.builder()
+				.id(entity.getId())
+				.cep(entity.getCep())
+				.rua(entity.getRua())
+				.numero(entity.getNumero())
+				.bairro(entity.getBairro())
+				.cidade(entity.getCidade())
+				.estado(entity.getEstado())
+				.pais(entity.getPais())
+				.build();
+	}
 
 }

@@ -1,18 +1,22 @@
 package io.github.wiriswernek.fisctrack.domain.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import io.github.wiriswernek.fisctrack.core.exceptions.BusinessException;
 import io.github.wiriswernek.fisctrack.core.exceptions.ValidationException;
+import io.github.wiriswernek.fisctrack.core.mapper.ItemNotaFiscalMapper;
 import io.github.wiriswernek.fisctrack.core.mapper.NotaFiscalMapper;
 import io.github.wiriswernek.fisctrack.domain.model.dto.filter.NotaFiscalFilter;
 import io.github.wiriswernek.fisctrack.domain.model.dto.request.NotaFiscalRequest;
 import io.github.wiriswernek.fisctrack.domain.model.dto.response.NotaFiscalResponse;
 import io.github.wiriswernek.fisctrack.domain.model.entity.Fornecedor;
+import io.github.wiriswernek.fisctrack.domain.model.entity.ItemNotaFiscal;
 import io.github.wiriswernek.fisctrack.domain.model.entity.NotaFiscal;
 import io.github.wiriswernek.fisctrack.domain.model.repository.FornecedorRepository;
 import io.github.wiriswernek.fisctrack.domain.model.repository.NotaFiscalRepository;
+import io.github.wiriswernek.fisctrack.domain.model.repository.ProdutoRepository;
 import io.github.wiriswernek.fisctrack.domain.service.NotaFiscalService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.ConstraintViolation;
@@ -25,6 +29,7 @@ public class NotaFiscalServiceImpl implements NotaFiscalService {
 
 	private final NotaFiscalRepository notaFiscalRepository;
 	private final FornecedorRepository fornecedorRepository;
+	private final ProdutoRepository produtoRepository;
 	private final Validator validator;
 
 	@Override
@@ -43,13 +48,16 @@ public class NotaFiscalServiceImpl implements NotaFiscalService {
 	}
 
 	@Override
-	public void create(NotaFiscalRequest notaFiscalRequest) throws Exception {
+	public void create(NotaFiscalRequest notaFiscalRequest) throws Exception, BusinessException {
 		validate(notaFiscalRequest);
 
-		var fornecedor = getFornecedor(notaFiscalRequest.getFornecedorId());
 		var entity = NotaFiscalMapper.toEntityByRequest(notaFiscalRequest);
+		var fornecedor = getFornecedor(notaFiscalRequest.getFornecedorId());
+		var itens = getItensNota(notaFiscalRequest, entity);
 
 		entity.setFornecedor(fornecedor);
+		entity.getItens().clear();
+		itens.forEach(entity::addItem);
 		notaFiscalRepository.persist(entity);
 	}
 
@@ -59,14 +67,19 @@ public class NotaFiscalServiceImpl implements NotaFiscalService {
 
 		validate(notaFiscalRequest);
 		var fornecedor = getFornecedor(notaFiscalRequest.getFornecedorId());
+		var itens = getItensNota(notaFiscalRequest, entity);
 
 		entity.setNumeroNota(notaFiscalRequest.getNumeroNota());
 		entity.setTotal(notaFiscalRequest.getTotal());
 		entity.setFornecedor(fornecedor);
 
+		entity.getItens().clear();
+		itens.forEach(entity::addItem);
+
 		var enderecoRequest = notaFiscalRequest.getEndereco();
 		var endereco = entity.getEndereco();
 
+		endereco.setCep(enderecoRequest.getCep());
 		endereco.setBairro(enderecoRequest.getBairro());
 		endereco.setCidade(enderecoRequest.getCidade());
 		endereco.setEstado(enderecoRequest.getEstado());
@@ -103,5 +116,31 @@ public class NotaFiscalServiceImpl implements NotaFiscalService {
 			throw new BusinessException("Fornecedor não encontrado");
 		}
 		return fornecedor;
+	}
+
+	private List<ItemNotaFiscal> getItensNota(NotaFiscalRequest notaFiscalRequest, NotaFiscal entity)
+			throws BusinessException {
+		var produtosNaoEncontrados = new ArrayList<String>();
+
+		var itens = new ArrayList<ItemNotaFiscal>();
+
+		notaFiscalRequest.getItens().forEach(item -> {
+			var produto = produtoRepository.findById(item.getProdutoId());
+			if (produto == null) {
+				produtosNaoEncontrados.add("Produto não encontrado ".concat(item.getProdutoId().toString()));
+				return;
+			}
+
+			var itemEntity = ItemNotaFiscalMapper.toEntityByRequest(item);
+			itemEntity.setNotaFiscal(entity);
+			itemEntity.setProduto(produto);
+			itens.add(itemEntity);
+		});
+
+		if (!produtosNaoEncontrados.isEmpty()) {
+			throw new BusinessException(produtosNaoEncontrados.toString());
+		}
+
+		return itens;
 	}
 }

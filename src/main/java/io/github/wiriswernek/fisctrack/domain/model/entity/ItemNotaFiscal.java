@@ -21,22 +21,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "ITEM_NOTA_FISCAL")
 public class ItemNotaFiscal {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "QUANTIDADE")
-    private Integer quantidade;
+	@Column(name = "QUANTIDADE")
+	private Integer quantidade;
 
-    @Column(name = "VALOR_UNITARIO")
-    private Float valorUnitario;
+	@Column(name = "VALOR_UNITARIO")
+	private Float valorUnitario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUTO_ID")
-    private Produto produto;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "PRODUTO_ID")
+	private Produto produto;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "NOTA_FISCAL_ID")
-    private NotaFiscal notaFiscal;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "NOTA_FISCAL_ID")
+	private NotaFiscal notaFiscal;
 
 }

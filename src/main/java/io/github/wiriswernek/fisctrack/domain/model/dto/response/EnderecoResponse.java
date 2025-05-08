@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class EnderecoResponse {
     private Long id;
+	private String cep;
     private String rua;
     private Integer numero;
     private String bairro;
