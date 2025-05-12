@@ -1,66 +1,33 @@
-# fisctrack-core
+# Fisctrack Core
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## 🔥 Sobre
+Este projeto é uma API construída com Java e Quarkus para gerenciar notas fiscais, através dela é possível gerenciar produtos, fornecedores e as próprias notas
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+## 🔨 Como executar esta aplicação?
 
-## Running the application in dev mode
+### Pré requisitos
+- Java na versão `21`
+- Maven na versão `3.8.7`
+- Um servidor ou instância do PostgreSQL rodando na porta `5432` com um banco de dados vazio nomeado de `fisctrack_db`
+	- É recomendado o uso de um container para o banco de dados local, ele pode ser criado a partir do seguinte comando `docker run --name postgresql_fisctrack -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=fisctrack_db -p 5432:5432 -d postgres:17`
 
-You can run your application in dev mode that enables live coding using:
+### Tutorial 
+Para rodar a aplicação voce deve:
+- Primeiro clonar este repositório
+- Navegar para a pasta `fisctrack-core`
+- Ajustar as variáveis no arquivo `application.properties`
+	- Se estiver utilizando o banco de dados em um container criado pelo tópico anterior não é necessário nenhum ajuste.
+- Executar o comando `mvn quarkus:dev` ou `./mvnw quarkus:dev` para rodar a aplicação
 
-```shell script
-./mvnw quarkus:dev
-```
+Caso deseje empacotar a aplicação e gerar um executável, você deve:
+- Dentro da pasta executar o comando `mvn package` ou `./mvnw package`
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+Para gerar um executável nativo deve:
+- Dentro da pasta executar o comando `mvn package -Dnative` ou `./mvnw package -Dnative`
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
-```
-
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/fisctrack-core-1.0-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+## 📦 Tecnologias usadas
+- ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+- ![Maven](https://img.shields.io/badge/apachemaven-C71A36.svg?style=for-the-badge&logo=apachemaven&logoColor=white)
+- ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+- ![Quarkus](https://img.shields.io/badge/quarkus-%234794EB.svg?style=for-the-badge&logo=quarkus&logoColor=white)
+- ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
