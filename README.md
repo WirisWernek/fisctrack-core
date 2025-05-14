@@ -3,6 +3,8 @@
 ## 🔥 Sobre
 Este projeto é uma API construída com Java e Quarkus para gerenciar notas fiscais, através dela é possível gerenciar produtos, fornecedores e as próprias notas
 
+O Swagger desta aplicação esta disponível [https://wiriswernek.github.io/fisctrack-core](https://wiriswernek.github.io/fisctrack-core)
+
 ## 🔨 Como executar esta aplicação?
 
 ### Pré requisitos
