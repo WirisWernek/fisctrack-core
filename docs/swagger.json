@@ -1,0 +1,1135 @@
+{
+  "openapi": "3.0.0",
+  "components": {
+    "schemas": {
+      "ApiErrors": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "EnderecoRequest": {
+        "type": "object",
+        "required": [
+          "cep",
+          "rua",
+          "numero",
+          "bairro",
+          "cidade",
+          "estado",
+          "pais"
+        ],
+        "properties": {
+          "cep": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "rua": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bairro": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "cidade": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "estado": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "pais": {
+            "type": "string",
+            "pattern": "\\S"
+          }
+        }
+      },
+      "EnderecoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "cep": {
+            "type": "string"
+          },
+          "rua": {
+            "type": "string"
+          },
+          "numero": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bairro": {
+            "type": "string"
+          },
+          "cidade": {
+            "type": "string"
+          },
+          "estado": {
+            "type": "string"
+          },
+          "pais": {
+            "type": "string"
+          }
+        }
+      },
+      "FornecedorRequest": {
+        "type": "object",
+        "required": ["razaoSocial", "cnpj", "email", "telefone", "situacao"],
+        "properties": {
+          "razaoSocial": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "cnpj": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "email": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "telefone": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "situacao": {
+            "$ref": "#/components/schemas/SituacaoFornecedorEnum"
+          }
+        }
+      },
+      "FornecedorResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "razaoSocial": {
+            "type": "string"
+          },
+          "cnpj": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telefone": {
+            "type": "string"
+          },
+          "situacao": {
+            "$ref": "#/components/schemas/SituacaoFornecedorEnum"
+          },
+          "dataBaixa": {
+            "$ref": "#/components/schemas/LocalDate"
+          }
+        }
+      },
+      "ItemNotaFiscalRequest": {
+        "type": "object",
+        "required": ["produtoId", "quantidade", "valorUnitario"],
+        "properties": {
+          "produtoId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantidade": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorUnitario": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "ItemNotaFiscalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "quantidade": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "valorUnitario": {
+            "type": "number",
+            "format": "float"
+          },
+          "produto": {
+            "$ref": "#/components/schemas/ProdutoResponse"
+          }
+        }
+      },
+      "LocalDate": {
+        "type": "string",
+        "format": "date",
+        "examples": ["2022-03-10"]
+      },
+      "LocalDateTime": {
+        "type": "string",
+        "format": "date-time",
+        "examples": ["2022-03-10T12:15:50"]
+      },
+      "NotaFiscalRequest": {
+        "type": "object",
+        "required": [
+          "numeroNota",
+          "total",
+          "fornecedorId",
+          "endereco",
+          "itens"
+        ],
+        "properties": {
+          "numeroNota": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "total": {
+            "type": "number",
+            "format": "float"
+          },
+          "fornecedorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "endereco": {
+            "$ref": "#/components/schemas/EnderecoRequest"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemNotaFiscalRequest"
+            }
+          }
+        }
+      },
+      "NotaFiscalResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "numeroNota": {
+            "type": "string"
+          },
+          "total": {
+            "type": "number",
+            "format": "float"
+          },
+          "emissao": {
+            "$ref": "#/components/schemas/LocalDateTime"
+          },
+          "fornecedor": {
+            "$ref": "#/components/schemas/FornecedorResponse"
+          },
+          "endereco": {
+            "$ref": "#/components/schemas/EnderecoResponse"
+          },
+          "quantidadeProdutos": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "itens": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ItemNotaFiscalResponse"
+            }
+          }
+        }
+      },
+      "ProdutoRequest": {
+        "type": "object",
+        "required": ["descricao", "situacao"],
+        "properties": {
+          "descricao": {
+            "type": "string",
+            "pattern": "\\S"
+          },
+          "situacao": {
+            "$ref": "#/components/schemas/SituacaoProdutoEnum"
+          }
+        }
+      },
+      "ProdutoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "descricao": {
+            "type": "string"
+          },
+          "situacao": {
+            "$ref": "#/components/schemas/SituacaoProdutoEnum"
+          }
+        }
+      },
+      "SituacaoFornecedorEnum": {
+        "type": "string",
+        "enum": ["ATIVO", "BAIXADO", "SUSPENSO"]
+      },
+      "SituacaoProdutoEnum": {
+        "type": "string",
+        "enum": ["ATIVO", "INATIVO"]
+      }
+    }
+  },
+  "paths": {
+    "/api/fornecedor": {
+      "get": {
+        "parameters": [
+          {
+            "name": "cnpj",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "razaoSocial",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "situacao",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de fornecedores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FornecedorResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get All",
+        "tags": ["Fornecedor Controller"]
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Fornecedor criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create",
+        "tags": ["Fornecedor Controller"]
+      }
+    },
+    "/api/fornecedor/{id}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FornecedorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Fornecedor atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update",
+        "tags": ["Fornecedor Controller"]
+      },
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de fornecedores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FornecedorResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get By Id",
+        "tags": ["Fornecedor Controller"]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fornecedor excluído com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete",
+        "tags": ["Fornecedor Controller"]
+      }
+    },
+    "/api/fornecedor/{id}/baixa": {
+      "patch": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Fornecedor baixado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Baixar",
+        "tags": ["Fornecedor Controller"]
+      }
+    },
+    "/api/nota-fiscal": {
+      "get": {
+        "parameters": [
+          {
+            "name": "dataEmissaoFim",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataEmissaoInicio",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fornecedorId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "numeroNota",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de Notas Fiscais",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/NotaFiscalResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get All",
+        "tags": ["Nota Fiscal Controller"]
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotaFiscalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Nota Fiscal criada com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create",
+        "tags": ["Nota Fiscal Controller"]
+      }
+    },
+    "/api/nota-fiscal/{id}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotaFiscalRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Nota Fiscal atualizada com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update",
+        "tags": ["Nota Fiscal Controller"]
+      },
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nota Fiscal encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotaFiscalResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get By Id",
+        "tags": ["Nota Fiscal Controller"]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Nota Fiscal excluída com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete",
+        "tags": ["Nota Fiscal Controller"]
+      }
+    },
+    "/api/produto": {
+      "get": {
+        "parameters": [
+          {
+            "name": "descricao",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "situacao",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de Produtos",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ProdutoResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get All",
+        "tags": ["Produto Controller"]
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Produto criado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Create",
+        "tags": ["Produto Controller"]
+      }
+    },
+    "/api/produto/{id}": {
+      "put": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProdutoRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update",
+        "tags": ["Produto Controller"]
+      },
+      "get": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProdutoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get By Id",
+        "tags": ["Produto Controller"]
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Produto excluído com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Delete",
+        "tags": ["Produto Controller"]
+      }
+    },
+    "/api/produto/{id}/situacao": {
+      "patch": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Situação do produto atualizada com sucesso"
+          },
+          "400": {
+            "description": "Erro de validação",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno do servidor",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiErrors"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Update Situacao",
+        "tags": ["Produto Controller"]
+      }
+    }
+  },
+  "info": {
+    "title": "Fisctrack API",
+    "version": "1.0",
+    "description": "API para gerenciamento de notas fiscais",
+    "contact": {
+      "name": "Suporte",
+      "email": "wiriswernek@gmail.com",
+      "url": "https://wiriswernek.tech"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080"
+    }
+  ]
+}

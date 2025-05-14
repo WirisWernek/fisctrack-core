@@ -1,8 +1,13 @@
 package io.github.wiriswernek.fisctrack.rest.controller;
 
-import io.github.wiriswernek.fisctrack.core.baseclass.BaseController;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+
+import io.github.wiriswernek.fisctrack.core.exceptions.ApiErrors;
 import io.github.wiriswernek.fisctrack.domain.model.dto.filter.ProdutoFilter;
 import io.github.wiriswernek.fisctrack.domain.model.dto.request.ProdutoRequest;
+import io.github.wiriswernek.fisctrack.domain.model.dto.response.ProdutoResponse;
 import io.github.wiriswernek.fisctrack.domain.model.enums.SituacaoProdutoEnum;
 import io.github.wiriswernek.fisctrack.domain.service.ProdutoService;
 import jakarta.inject.Inject;
@@ -19,84 +24,75 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import lombok.RequiredArgsConstructor;
 
-@Path("/api/produto")
+@Path("/produto")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-@RequiredArgsConstructor
-public class ProdutoController extends BaseController {
+public class ProdutoController {
 
 	@Inject
 	private ProdutoService produtoService;
 
 	@GET
-	public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao,
-			@QueryParam("situacao") String situacao) {
-		try {
-			var filter = new ProdutoFilter(id, descricao, SituacaoProdutoEnum.parse(situacao));
-			var produtos = produtoService.search(filter);
-			return Response.ok(produtos).build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "200", description = "Lista de Produtos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProdutoResponse[].class)))
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response getAll(@QueryParam("id") Long id, @QueryParam("descricao") String descricao, @QueryParam("situacao") String situacao) throws Exception {
+		var filter = new ProdutoFilter(id, descricao, SituacaoProdutoEnum.parse(situacao));
+		var produtos = produtoService.search(filter);
+		return Response.ok(produtos).build();
 	}
 
 	@GET
 	@Path("/{id}")
-	public Response getById(@PathParam("id") Long id) {
-		try {
-			var produto = produtoService.findById(id);
-			return Response.ok(produto).build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "200", description = "Produto encontrado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ProdutoResponse.class)))
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response getById(@PathParam("id") Long id) throws Exception {
+		var produto = produtoService.findById(id);
+		return Response.ok(produto).build();
 	}
 
 	@POST
 	@Transactional
-	public Response create(ProdutoRequest produto) {
-		try {
-			produtoService.create(produto);
-			return Response.status(Response.Status.CREATED).build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "201", description = "Produto criado com sucesso")
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response create(ProdutoRequest produto) throws Exception {
+		produtoService.create(produto);
+		return Response.status(Response.Status.CREATED).build();
 	}
 
 	@PUT
 	@Path("/{id}")
 	@Transactional
-	public Response update(@PathParam("id") Long id, ProdutoRequest produto) {
-		try {
-			produtoService.update(id, produto);
-			return Response.noContent().build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "200", description = "Produto atualizado com sucesso")
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response update(@PathParam("id") Long id, ProdutoRequest produto) throws Exception {
+		produtoService.update(id, produto);
+		return Response.noContent().build();
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@Transactional
-	public Response delete(@PathParam("id") Long id) {
-		try {
-			produtoService.delete(id);
-			return Response.noContent().build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "200", description = "Produto excluído com sucesso")
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response delete(@PathParam("id") Long id) throws Exception {
+		produtoService.delete(id);
+		return Response.noContent().build();
 	}
 
 	@PATCH
 	@Path("/{id}/situacao")
 	@Transactional
-	public Response updateSituacao(@PathParam("id") Long id) {
-		try {
-			produtoService.updateSituacao(id);
-			return Response.noContent().build();
-		} catch (Exception e) {
-			return handleException(e);
-		}
+	@APIResponse(responseCode = "200", description = "Situação do produto atualizada com sucesso")
+	@APIResponse(responseCode = "400", description = "Erro de validação", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	@APIResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrors.class)))
+	public Response updateSituacao(@PathParam("id") Long id) throws Exception {
+		produtoService.updateSituacao(id);
+		return Response.noContent().build();
 	}
 }
